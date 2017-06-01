@@ -1,9 +1,11 @@
 package ManipulacaoArquivo;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +39,17 @@ public class LerArquivo {
 
 		List<String> data = new ArrayList<String>();
 		BufferedReader leitor;
+		
 
 		try {
 			leitor = new BufferedReader(new FileReader(file));
+			
 
 			try {
 
 				while (leitor.ready()) {
 					String comando = leitor.readLine();
+					
 					data.add(comando);
 				}
 			} catch (IOException e) {

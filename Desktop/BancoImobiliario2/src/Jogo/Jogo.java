@@ -2,10 +2,12 @@ package Jogo;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import Imoveis.Imovel;
 import Jogadores.GerarJogadores;
 import Jogadores.Jogador;
+import ManipulacaoArquivo.EscreverArquivo;
 import ManipulacaoArquivo.LerArquivo;
 import Tabuleiro.*;
 /**
@@ -98,14 +100,7 @@ public class Jogo {
 						} 
 						
 					}
-					for(int a = 0; a < this.jogadores_.size(); a++){
-						System.out.println("Nome: "+jogadores_.get(a).getNome()+" Ordem " + jogadores_.get(a).getOrdemJogada()+
-								" Posicao"+jogadores_.get(a).getPosicao()+" Dinheiro "+jogadores_.get(a).getBanco() +
-								" Aluguel Pago "+ jogadores_.get(a).getAluguelPago() + " Aluguel Rec " +jogadores_.get(a).getAluguel()
-								+" Voltas "+ jogadores_.get(a).getVoltas() + " Compras "+jogadores_.get(a).getGastouCompras()
-								+" Passe "+jogadores_.get(a).getPasseVez());
-						System.out.println("\n");
-					}
+					
 				}
 				
 			}
@@ -153,24 +148,16 @@ public class Jogo {
 	}
 	
 	public void gameOver(){
-		int aux = 0;
-		for(int i = 0; i < this.jogadores_.size() ; i++){
-			System.out.println("Jogador " + this.jogadores_.get(i).getNome());
-			System.out.println("Saldo Final: $" + this.jogadores_.get(i).getBanco());
-			System.out.println("Aluguel Arrecadado: $" + this.jogadores_.get(i).getAluguel());
-			System.out.println("Aluguel Pago: $" + this.jogadores_.get(i).getAluguelPago());
-			if ( aux<this.jogadores_.get(i).getPosicao()){
-				aux = this.jogadores_.get(i).getPosicao();
-				
-			}
-			System.out.println("Lista de Imoveis Adiquiridos:");
-			for(int j = 0; j<this.jogadores_.get(i).getImoveis().size() ; j++){
-				System.out.println(this.jogadores_.get(i).getImoveis().get(j).getNome());
-			}
-			System.out.println("#######################################################");
+		List<String> escrita = new ArrayList<String>();
+		for(int i = 0; i < this.jogadores_.size(); i++){
+			escrita.add(new String("Nome: "+jogadores_.get(i).getNome()+" Ordem " + jogadores_.get(i).getOrdemJogada()+
+					" Posicao"+jogadores_.get(i).getPosicao()+" Dinheiro "+jogadores_.get(i).getBanco() +
+					" Aluguel Pago "+ jogadores_.get(i).getAluguelPago() + " Aluguel Rec " +jogadores_.get(i).getAluguel()
+					+" Voltas "+ jogadores_.get(i).getVoltas() + " Compras "+jogadores_.get(i).getGastouCompras()
+					+" Passe "+jogadores_.get(i).getPasseVez()));
 		}
-		System.out.println("Numero de voltas dadas no tabuleiro: " + aux/this.tab_.getTamanho() );
-			
+		EscreverArquivo escrever = new EscreverArquivo(new File("estatisticas.txt"));
+		escrever.escreveDados(escrita);
 	}
 	/**
 	 * Função que compra o imovel em que está na posição

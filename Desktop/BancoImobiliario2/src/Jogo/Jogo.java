@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import Excessões.PertenceAJogador;
 import Imoveis.Imovel;
 import Jogadores.GerarJogadores;
 import Jogadores.Jogador;
@@ -74,7 +75,15 @@ public class Jogo {
 							 *  
 							 */
 							if(this.tab_.getListaJogadores().get(this.jogadores_.get(k).getPosicao()).getNome()== "banco"){
-								this.jogadores_.set(k, comprarImovel(this.jogadores_.get(k)));
+								Jogador aux;
+								try{
+									aux = comprarImovel(this.jogadores_.get(k));
+									this.jogadores_.set(k, aux);
+								}catch(PertenceAJogador x){
+									x.printmsg();
+									x.printStackTrace();
+								}
+								
 							}
 							else if(this.tab_.getListaImoveis().get(this.jogadores_.get(k).getPosicao()).getNome() == "Start"){
 								
@@ -140,7 +149,10 @@ public class Jogo {
 		}
 	}
 	
-
+	/**
+	 * função que prepara as informações em uma lista de strings para serem escritas
+	 * no arquivo de estatísticas
+	 */
 	public void gameOver(){
 		List<String> escrita = new ArrayList<String>();
 		String aux = new String();
@@ -204,8 +216,14 @@ public class Jogo {
 	 * do imovel e acrescenta o valor da compra no atributo GastouCompras
 	 * @param jog
 	 * @return
+	 * @throws PertenceAJogador 
 	 */
-	public Jogador comprarImovel(Jogador jog){
+	public Jogador comprarImovel(Jogador jog) throws PertenceAJogador{
+		if(!this.tab_.getListaJogadores().get(jog.getPosicao()).getNome().equals("banco")){
+			PertenceAJogador x = new PertenceAJogador();
+			throw x;
+			
+		}else{
 			jog.setBanco((jog.getBanco() - this.tab_.getListaImoveis().get(jog.getPosicao()).getValor()));
 			jog.setGastouCompras(jog.getGastouCompras()+this.tab_.getListaImoveis().get(jog.getPosicao()).getValor());
 			this.tab_.setListaJogadores(jog);;
@@ -213,6 +231,7 @@ public class Jogo {
 			imovel.add(this.tab_.getListaImoveis().get(jog.getPosicao()));
 			jog.setImoveis(imovel);
 			return jog;
+		}
 	}
 	/**
 	 * Função que em que um jogador paga o aluguel por ter parado em posicao que possui
@@ -225,7 +244,7 @@ public class Jogo {
 		/**O primeiro if verifica se o imovel não é do jogador para que ele possa pagar o aluguel, então retira
 		 * do dinheito acumulado o valor do aluguel e acrescenta na variavel que guarda o valor de alugueis
 		 * pagos o valor da taxa do imovel que está na posicao que ele parou. Além disso soma o aluguel no valor
-		 * do dono do imovel.		 * 
+		 * do dono do imovel.
 		 */
 		if(!this.tab_.getListaJogadores().get(jog.getPosicao() % this.tab_.getTamanho()).equals(jog)){
 			jog.setBanco((jog.getBanco() - this.tab_.getListaImoveis().get(jog.getPosicao()).getTaxa()));

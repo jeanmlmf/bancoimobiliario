@@ -1,17 +1,17 @@
 package ManipulacaoArquivo;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 /**
  *
- * @author User
+ * @author Ariane
  * A classe LerArquivo representa a leitura de arquivos
  * de texto. O atributo file refere-se ao arquivo que deve
  * ser lido. Já o atributo dadosArquivo são as informações 

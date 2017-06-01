@@ -1,3 +1,7 @@
-Nome: Jogador 0 Ordem 1 Posicao3 Dinheiro 3195.0 Aluguel Pago 60.0 Aluguel Rec 105.0 Voltas 1 Compras 350.0 Passe 0
-Nome: Jogador 1 Ordem 2 Posicao3 Dinheiro 3285.0 Aluguel Pago 115.0 Aluguel Rec 0.0 Voltas 1 Compras 100.0 Passe 0
-Nome: Jogador 2 Ordem 3 Posicao5 Dinheiro 2700.0 Aluguel Pago 0.0 Aluguel Rec 70.0 Voltas 1 Compras 900.0 Passe 0
+1:4
+2:0-1;1-1;2-1
+3:0-3195.0;1-3285.0;2-2700.0
+4:0-105.0;1-0.0;2-70.0
+5:0-60.0;1-115.0;2-0.0
+6:0-350.0;1-100.0;2-900.0
+7:0-0;1-0;2-0

@@ -1,10 +1,10 @@
 package ManipulacaoArquivo;
 
-import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,10 +24,11 @@ public class EscreverArquivo {
 
 		try {
 			escritor = new BufferedWriter(new FileWriter(file));
-			for(int i = 0; i<escrever.size();i++){
+			for (int i = 0; i < escrever.size(); i++) {	
 				escritor.write(escrever.get(i));
 				escritor.newLine();
 			}
+			
 			escritor.close();
 		}
 		catch (FileNotFoundException e1) {

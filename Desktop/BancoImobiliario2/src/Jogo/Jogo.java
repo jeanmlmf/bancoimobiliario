@@ -20,6 +20,7 @@ import Tabuleiro.*;
 public class Jogo {
 	private Tabuleiro tab_;
 	private ArrayList<Jogador> jogadores_ = new ArrayList<Jogador>();
+	int rodadas;
 	/**Funçao que inicia o novo jogo, faz a criação e a geração de 
 	 * um tabuleiro, gera os jogadores e realiza as jogadas. 
 	 */
@@ -41,18 +42,21 @@ public class Jogo {
 		 */
 		for (int i = 1; i <leituraJogadas.getDadosArquivo().size(); i++) {
 			/**
-			 * Verifica se a proxima linha possui o comando DUMP o qual significa fim de jogo 
+			 * Verifica se a proxima linha possui o comando DUMP ou se existe apenas 1 jogador no jogo o que significa fim de jogo 
 			 */
-			if(leituraJogadas.getDadosArquivo().get(i).get(0) != "DUMP"){
+			
+			if(leituraJogadas.getDadosArquivo().get(i).get(0) != "DUMP"||this.checaFim()){
 				/**
 				 * For que controla as colunas
 				 */
+				this.rodadas++;
 				for (int j = 1; j < leituraJogadas.getDadosArquivo().get(i).size(); j++) {
 					/**
 					 * For que passa por todos os jogadores e o if verifica se o jogador 
 					 * que está no for é o que deve realizar a jogada e se esse jogador 
 					 * ainda não faliu
 					 */
+					
 					for(int k = 0; k < gerar.getQuantidadeJogadores(); k++){
 						if(this.jogadores_.get(k).getOrdemJogada() == Integer.parseInt(leituraJogadas.getDadosArquivo().get(i).get(j))&&this.jogadores_.get(k).isFaliu()==false){
 							j++;
@@ -104,19 +108,25 @@ public class Jogo {
 				}
 				
 			}
+			
 		}
 	}
+	
+	/**
+	 *retorna false caso esteja sobrando apenas 1 jogador no jogo 
+	 *@return
+	 */
 	public boolean checaFim(){
-		int x = 0;
-		for(int i = 0; i<this.jogadores_.size(); i++){
-			if(this.jogadores_.get(i).getOrdemJogada()<0){
-				x++;
-			}
+		int count = 0;
+		for (int i = 0; i<this.jogadores_.size();i++){
+			if(jogadores_.get(i).isFaliu())
+				count++;
 		}
-		if(x==this.jogadores_.size()-1){
-			return true;
+		if(count ==this.jogadores_.size()-1 ){
+			return false;
 		}
-		return false;
+		return true;
+		
 	}
 	/**
 	 * Funçao que mostra a lista de imoveis adquiridos por
@@ -130,39 +140,68 @@ public class Jogo {
 		}
 	}
 	
-	public boolean falirJogador(Jogador jog){
-		if(jog.getBanco()<=0){
-			if(jog.getOrdemJogada()>=0){
-				for(int i = 0 ; i < this.tab_.getTamanho(); i++){
-					if(this.tab_.getListaJogadores().get(i).equals(jog)){
-						this.tab_.getListaJogadores().set(i, new Jogador("banco", -1));
-					}
-				}
-				System.out.println("Jogador" + (jog.getOrdemJogada()+1) + ": Faliu!!");
-				jog.setOrdemJogada(jog.getOrdemJogada()-6);
-				return true;
-			}
-		}
-		return false;
 
-	}
-	
 	public void gameOver(){
 		List<String> escrita = new ArrayList<String>();
-		for(int i = 0; i < this.jogadores_.size(); i++){
-			escrita.add(new String("Nome: "+jogadores_.get(i).getNome()+" Ordem " + jogadores_.get(i).getOrdemJogada()+
-					" Posicao"+jogadores_.get(i).getPosicao()+" Dinheiro "+jogadores_.get(i).getBanco() +
-					" Aluguel Pago "+ jogadores_.get(i).getAluguelPago() + " Aluguel Rec " +jogadores_.get(i).getAluguel()
-					+" Voltas "+ jogadores_.get(i).getVoltas() + " Compras "+jogadores_.get(i).getGastouCompras()
-					+" Passe "+jogadores_.get(i).getPasseVez()));
+		String aux = new String();
+		escrita.add("1:" + this.rodadas/this.jogadores_.size());
+		aux = "2:";
+		for(int i = 0;i<this.jogadores_.size();i++){
+			aux += "" + i +"-"+ this.jogadores_.get(i).getVoltas();
+			if(i!=this.jogadores_.size()-1){
+				aux+=";";
+			}
 		}
+		escrita.add(aux);
+		aux = "3:";
+		for(int i = 0;i<this.jogadores_.size();i++){
+			aux += "" + i +"-"+ this.jogadores_.get(i).getBanco();
+			if(i!=this.jogadores_.size()-1){
+				aux+=";";
+			}
+		}
+		escrita.add(aux);
+		aux = "4:";
+		for(int i = 0;i<this.jogadores_.size();i++){
+			aux += "" + i +"-"+ this.jogadores_.get(i).getAluguel();
+			if(i!=this.jogadores_.size()-1){
+				aux+=";";
+			}
+		}
+		escrita.add(aux);
+		aux = "5:";
+		for(int i = 0;i<this.jogadores_.size();i++){
+			aux += "" + i +"-"+ this.jogadores_.get(i).getAluguelPago();
+			if(i!=this.jogadores_.size()-1){
+				aux+=";";
+			}
+		}
+		escrita.add(aux);
+		aux = "6:";
+		for(int i = 0;i<this.jogadores_.size();i++){
+			aux += "" + i +"-"+ this.jogadores_.get(i).getGastouCompras();
+			if(i!=this.jogadores_.size()-1){
+				aux+=";";
+			}
+		}
+		escrita.add(aux);
+		aux = "7:";
+		for(int i = 0;i<this.jogadores_.size();i++){
+			aux += "" + i +"-"+ this.jogadores_.get(i).getPasseVez();
+			if(i!=this.jogadores_.size()-1){
+				aux+=";";
+			}
+		}
+		escrita.add(aux);
+		
+		
 		EscreverArquivo escrever = new EscreverArquivo(new File("estatisticas.txt"));
 		escrever.escreveDados(escrita);
 	}
 	/**
 	 * Função que compra o imovel em que está na posição
 	 * que o jogador parou. Retira do jogador o valor de compra
-	 * do imovel e acrscenta o valor da compra no atributo GastouCompras
+	 * do imovel e acrescenta o valor da compra no atributo GastouCompras
 	 * @param jog
 	 * @return
 	 */

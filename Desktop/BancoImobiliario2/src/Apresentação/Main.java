@@ -1,10 +1,10 @@
 //Trabalho realizado por Ariane Hélida e Jean Marcos Ciência da computação POOII 5º Periodo
 package Apresentação;
 
-import java.io.File;
+
 
 import Jogo.Jogo;
-import ManipulacaoArquivo.*;
+
 
 public class Main {
 
